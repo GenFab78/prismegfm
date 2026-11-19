@@ -19,3 +19,17 @@ document.addEventListener('click', function (e) {
   document.querySelectorAll('#menu a').forEach(function (a) { a.addEventListener('click', function () { set(false); }); });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') set(false); });
 })();
+
+/* Partage : copier le lien, partage natif sur mobile (aucun script tiers) */
+document.querySelectorAll('.share').forEach(function (box) {
+  var url = box.dataset.url, title = box.dataset.title;
+  var copy = box.querySelector('.copy'), nat = box.querySelector('.native');
+  if (copy) copy.addEventListener('click', function () {
+    var done = function () { copy.classList.add('ok'); setTimeout(function () { copy.classList.remove('ok'); }, 1800); };
+    try { navigator.clipboard.writeText(url).then(done, done); } catch (e) { done(); }
+  });
+  if (nat && navigator.share) {
+    nat.hidden = false;
+    nat.addEventListener('click', function () { navigator.share({ title: title, url: url }).catch(function () {}); });
+  }
+});

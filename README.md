@@ -6,7 +6,8 @@ Site statique bilingue de Prisme GFM (HTML + CSS, aucun framework, aucun traceur
 - `en/index.html` : anglais
 - `assets/style.css` : styles et palette (bleu #32BEC1, rouge #FF3D4A, orange #FF8A00, jaune #FFD100)
 - `assets/fonts/` : Montserrat hébergée localement (licence OFL), donc aucun appel à Google Fonts
-- `assets/hero.js` : animation du logo (s'arrête hors écran et respecte le réglage « réduire les animations »)
+- `assets/site.js` : menu mobile, ancres, boutons de partage (sans script tiers)
+- `assets/hero.js` : animation du logo, en boucle (respecte le réglage « réduire les animations »)
 - `assets/og-fr.jpg`, `og-en.jpg` : images d'aperçu pour LinkedIn et les messageries
 - `CNAME` : le domaine utilisé par GitHub Pages
 
