@@ -335,3 +335,14 @@ nav .share a.sh{display:inline-flex;color:var(--gris)}
 @media(max-width:900px){.hero .logo-stage.prism-only{width:72%}.hero{padding-top:0}}
 @media(max-width:900px){.hero{align-items:flex-start;padding-top:10px}.hero .logo-stage.prism-only{width:82%}}
 footer .share .sh.native{display:none!important}
+/* Mobile : les plis couvrent tout l'écran, même sous la barre flottante de Safari (sauf Contact, qui doit montrer son pied de page) */
+@media(max-width:900px){
+ section:not(.contact){min-height:calc(100vh - 68px);min-height:calc(100lvh - 68px)}
+}
+
+/* Liens vers les réalisations et mentions */
+a.ext{color:inherit;text-decoration:none;border-bottom:1px dotted rgba(255,255,255,.45);transition:color .2s,border-color .2s}
+a.ext:hover{color:var(--bleu);border-bottom-color:var(--bleu)}
+.card h3 a.ext{border-bottom-color:rgba(255,255,255,.3)}
+
+.profiles{font-size:14px;color:var(--gris)}
