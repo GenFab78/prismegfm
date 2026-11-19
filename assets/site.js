@@ -1,3 +1,10 @@
+/* Toujours ouvrir le site en haut de l'accueil (sauf lien direct vers une section) */
+try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; } catch (e) {}
+if (!location.hash) {
+  window.scrollTo(0, 0);
+  window.addEventListener('load', function () { window.scrollTo(0, 0); });
+  window.addEventListener('pageshow', function (e) { if (e.persisted) window.scrollTo(0, 0); });
+}
 /* Navigation par ancres : défilement fiable vers chaque section (pli) */
 document.addEventListener('click', function (e) {
   var a = e.target.closest('a[href^="#"]');
@@ -7,7 +14,6 @@ document.addEventListener('click', function (e) {
   if (!el) return;
   e.preventDefault();
   el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  try { history.replaceState(null, '', '#' + id); } catch (err) {}
 });
 
 /* Menu burger */
