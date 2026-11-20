@@ -32,11 +32,11 @@ document.querySelectorAll('.share').forEach(function (box) {
   var copy = box.querySelector('.copy'), nat = box.querySelector('.native');
   if (copy) copy.addEventListener('click', function () {
     var done = function () { copy.classList.add('ok'); setTimeout(function () { copy.classList.remove('ok'); }, 1800); };
-    try { navigator.clipboard.writeText(url).then(done, done); } catch (e) { done(); }
+    try { navigator.clipboard.writeText(box.dataset.url).then(done, done); } catch (e) { done(); }
   });
   if (nat && navigator.share) {
     nat.hidden = false;
-    nat.addEventListener('click', function () { navigator.share({ title: title, url: url }).catch(function () {}); });
+    nat.addEventListener('click', function () { navigator.share({ title: title, url: box.dataset.url }).catch(function () {}); });
   }
 });
 
@@ -48,12 +48,26 @@ document.querySelectorAll('.share').forEach(function (box) {
     if (meta) meta.setAttribute('content', light ? '#FFFFFF' : '#08090A');
     document.querySelectorAll('.theme-toggle').forEach(function (b) { b.setAttribute('aria-pressed', light ? 'false' : 'true'); });
   }
+  /* L'adresse suit le mode : ?theme=clair en clair, adresse simple en sombre (le défaut) */
+  function syncUrl(light) {
+    var base = location.origin + location.pathname, url = base + (light ? '?theme=clair' : '');
+    try { history.replaceState(null, '', url + location.hash); } catch (e) {}
+    var enc = encodeURIComponent(url);
+    document.querySelectorAll('.share').forEach(function (box) {
+      box.dataset.url = url;
+      box.querySelectorAll('a.sh').forEach(function (a) {
+        a.href = a.href.replace(/(url=|u=|body=)[^&]*/, '$1' + enc);
+      });
+    });
+  }
   apply(root.getAttribute('data-theme') === 'light');
+  syncUrl(root.getAttribute('data-theme') === 'light');
   document.querySelectorAll('.theme-toggle').forEach(function (b) {
     b.addEventListener('click', function () {
       var light = root.getAttribute('data-theme') !== 'light';
       apply(light);
       try { localStorage.setItem('theme', light ? 'light' : 'dark'); } catch (e) {}
+      syncUrl(light);
     });
   });
 })();
