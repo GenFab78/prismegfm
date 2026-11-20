@@ -80,6 +80,7 @@ document.querySelectorAll('.logo-stage').forEach(function (stage) {
   }
   function frame() {
     ctx.clearRect(0, 0, w, h);
+    var light = document.documentElement.getAttribute('data-theme') === 'light';
     var max = w * 0.16;
     for (var i = 0; i < pts.length; i++) {
       var a = pts[i];
@@ -89,15 +90,15 @@ document.querySelectorAll('.logo-stage').forEach(function (stage) {
       for (var j = i + 1; j < pts.length; j++) {
         var b = pts[j], dx = a.x - b.x, dy = a.y - b.y, d = Math.sqrt(dx * dx + dy * dy);
         if (d < max) {
-          ctx.globalAlpha = (1 - d / max) * 0.35;
-          ctx.strokeStyle = a.c; ctx.lineWidth = 0.7;
+          ctx.globalAlpha = (1 - d / max) * (light ? 0.7 : 0.35);
+          ctx.strokeStyle = a.c; ctx.lineWidth = light ? 1 : 0.7;
           ctx.setLineDash([2, 3]);
           ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
         }
       }
-      ctx.globalAlpha = 0.45 + 0.45 * Math.sin(a.t);
+      ctx.globalAlpha = light ? 0.65 + 0.35 * Math.sin(a.t) : 0.45 + 0.45 * Math.sin(a.t);
       ctx.fillStyle = a.c;
-      ctx.beginPath(); ctx.arc(a.x, a.y, 1.4, 0, 6.28); ctx.fill();
+      ctx.beginPath(); ctx.arc(a.x, a.y, light ? 2 : 1.4, 0, 6.28); ctx.fill();
     }
     ctx.globalAlpha = 1;
     raf = requestAnimationFrame(frame);

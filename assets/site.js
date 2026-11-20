@@ -39,3 +39,21 @@ document.querySelectorAll('.share').forEach(function (box) {
     nat.addEventListener('click', function () { navigator.share({ title: title, url: url }).catch(function () {}); });
   }
 });
+
+/* Lune : mode sombre on/off, choix mémorisé dans ce navigateur seulement */
+(function () {
+  var root = document.documentElement, meta = document.querySelector('meta[name="theme-color"]');
+  function apply(light) {
+    if (light) root.setAttribute('data-theme', 'light'); else root.removeAttribute('data-theme');
+    if (meta) meta.setAttribute('content', light ? '#FFFFFF' : '#08090A');
+    document.querySelectorAll('.theme-toggle').forEach(function (b) { b.setAttribute('aria-pressed', light ? 'false' : 'true'); });
+  }
+  apply(root.getAttribute('data-theme') === 'light');
+  document.querySelectorAll('.theme-toggle').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var light = root.getAttribute('data-theme') !== 'light';
+      apply(light);
+      try { localStorage.setItem('theme', light ? 'light' : 'dark'); } catch (e) {}
+    });
+  });
+})();
